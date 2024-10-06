@@ -1,0 +1,46 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 280,
+    "height": 280,
+    "title": {
+        "text": "Species by Class in Australia"
+    },
+    "data": {
+        "url": "../data/LPD2022_public_aus.csv"
+    },
+    "transform": [
+        {
+            "filter": "datum.Country == 'Australia'"
+        }
+    ],
+    "mark": {
+        "type": "arc",
+        "innerRadius": 50
+    },
+    "encoding": {
+        "theta": {
+            "aggregate": "count",
+            "field": "Common_name",
+            "type": "quantitative",
+            "title": "Class Count"
+        },
+        "color": {
+            "field": "Class",
+            "type": "nominal",
+            "title": "Class"
+        },
+        "tooltip": [
+            {
+                "field": "Class",
+                "type": "nominal",
+                "title": "Class"
+            },
+            {
+                "aggregate": "count",
+                "field": "Common_name",
+                "type": "quantitative",
+                "title": "Class Count"
+            }
+        ]
+    }
+}

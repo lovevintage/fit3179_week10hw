@@ -1,0 +1,136 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 280,
+    "height": 280,
+    "title": {
+        "text": "Biodiversity in Australia"
+    },
+    "params": [
+        {
+            "name": "Class_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                    null,
+                    "Actinopteri",
+                    "Amphibia",
+                    "Aves",
+                    "Dipneusti",
+                    "Elasmobranchii",
+                    "Mammalia",
+                    "Reptilia"
+                ],
+                "labels": [
+                    "Show All",
+                    "Actinopteri",
+                    "Amphibia",
+                    "Aves",
+                    "Dipneusti",
+                    "Elasmobranchii",
+                    "Mammalia",
+                    "Reptilia"
+                ],
+                "name": "Class Selection"
+            }
+        }
+    ],
+    "layer": [
+        {
+            "mark": "geoshape",
+            "data": {
+                "url": "../data/ne_50m_admin_0_countries.geojson",
+                "format": {
+                    "type": "json",
+                    "property": "features"
+                }
+            },
+            "encoding": {
+                "color": {
+                    "value": "lightgray"
+                }
+            }
+        },
+        {
+            "data": {
+                "url": "../data/LPD2022_public_aus.csv"
+            },
+            "transform": [
+                {
+                    "filter": "datum.Country == 'Australia'"
+                },
+                {
+                    "filter": "Class_selection == null || datum.Class == Class_selection"
+                }
+            ],
+            "mark": "circle",
+            "encoding": {
+                "longitude": {
+                    "field": "Longitude",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "Latitude",
+                    "type": "quantitative"
+                },
+                "size": {
+                    "value": 30
+                },
+                "color": {
+                    "field": "Class",
+                    "type": "nominal",
+                    "title": "Class",
+                    "scale": {
+                        "domain": [
+                            "Actinopteri",
+                            "Amphibia",
+                            "Aves",
+                            "Dipneusti",
+                            "Elasmobranchii",
+                            "Mammalia",
+                            "Reptilia"
+                        ],
+                        "range": [
+                            "#00008B",
+                            "#00FFFF",
+                            "#87CEEB",
+                            "#FFFF00",
+                            "#FF0000",
+                            "#A0522D",
+                            "#006400"
+                        ]
+                    }
+                },
+                "tooltip": [
+                    {
+                        "field": "Common_name",
+                        "type": "nominal",
+                        "title": "Species"
+                    },
+                    {
+                        "field": "Location",
+                        "type": "nominal",
+                        "title": "Location"
+                    },
+                    {
+                        "field": "Class",
+                        "type": "nominal",
+                        "title": "Class"
+                    },
+                    {
+                        "field": "System",
+                        "type": "nominal",
+                        "title": "System"
+                    }
+                ]
+            }
+        }
+    ],
+    "projection": {
+        "type": "mercator",
+        "center": [
+            135,
+            -30
+        ],
+        "scale": 300
+    }
+}
